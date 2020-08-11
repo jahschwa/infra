@@ -1,0 +1,16 @@
+---
+- apt:
+    state: present
+    pkg:
+      - aptitude
+      - curl
+      - dnsutils
+      - htop
+      - iftop
+      - iotop
+      - iperf3
+      - jq
+      - mediainfo
+      - ncdu
+      - netcat
+      - nmap

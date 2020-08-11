@@ -1,0 +1,6 @@
+---
+- include_tasks: '{{ _auto_task }}'
+  loop: '{{ query("fileglob", "*.yml") | sort }}'
+  loop_control:
+    loop_var: _auto_task
+  when: not _auto_task is search("main.yml$")

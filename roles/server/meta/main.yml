@@ -1,0 +1,5 @@
+---
+dependencies:
+  - role: common
+    vars:
+      ssh_auth_keys: authorized_keys.server

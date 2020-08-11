@@ -1,0 +1,4 @@
+---
+- hosts: area11
+  roles:
+    - area11

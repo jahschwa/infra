@@ -1,0 +1,14 @@
+---
+- apt:
+    state: present
+    pkg:
+      - python3-pip
+
+- pip:
+    name:
+      - lxml
+      - Pillow
+      - pytz
+      - requests
+      - speedtest-cli
+      - youtube-dl
