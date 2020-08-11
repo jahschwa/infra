@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+TARGET=$(readlink -f "${BASH_SOURCE[0]}")
+DIR=$(dirname "$TARGET")
+DIR=$(dirname "$DIR")
+
+ansible-playbook "$DIR/site.yml" "$@"
