@@ -1,10 +1,12 @@
 ---
-- apt:
+- name: Install SSH server
+  apt:
     state: present
     pkg:
       - openssh-server
 
-- lineinfile:
+- name: Harden SSH
+  lineinfile:
     path: /etc/ssh/sshd_config
     regexp: '{{ item.key }}'
     line: '{{ item.value }}'
@@ -12,17 +14,20 @@
     '^#?PermitRootLogin': 'PermitRootLogin no'
     '^#?PasswordAuthentication': 'PasswordAuthentication no'
 
-- service:
+- name: Restart SSH
+  service:
     name: sshd
     state: restarted
 
-- file:
-    state: directory
+- name: Create ~/.ssh dir
+  file:
     path: ~/.ssh
+    state: directory
     mode: '0700'
   become: no
 
-- copy:
+- name: Copy authorized_keys
+  copy:
     src: '{{ ssh_auth_keys }}'
     dest: ~/.ssh/authorized_keys
     mode: '0600'

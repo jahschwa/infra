@@ -1,5 +1,6 @@
 ---
-- apt:
+- name: Install lighttpd
+  apt:
     pkg:
       - lighttpd
 
@@ -9,17 +10,20 @@
       tags:
         - server
 
-- file:
+- name: Create lighttpd password file
+  file:
     state: touch
     path: '{{ lighttpd_passwd_file }}'
     owner: root
     group: '{{ lighttpd_group }}'
     mode: '0640'
 
-- command:
+- name: Generate dhparam (this can take hours)
+  command:
     cmd: 'openssl dhparam -out {{ dhparam_file }} 4096'
     creates: '{{ dhparam_file }}'
 
-- service:
+- name: Restart lighttpd
+  service:
     name: lighttpd
     state: restarted

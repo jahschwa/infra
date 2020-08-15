@@ -1,5 +1,6 @@
 ---
-- apt:
+- name: Install utilities
+  apt:
     pkg:
       - aptitude
       - curl

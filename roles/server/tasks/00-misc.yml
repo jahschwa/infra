@@ -1,4 +1,5 @@
 ---
-- file:
+- name: Create cron script dir
+  file:
     path: '{{ cron_dir }}'
     state: directory

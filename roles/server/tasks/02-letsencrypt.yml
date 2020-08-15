@@ -1,21 +1,26 @@
 ---
-- apt_key:
+- name: Download certbot apt key
+  apt_key:
     id: '{{ letsencrypt_key }}'
     keyserver: keyserver.ubuntu.com
 
-- apt_repository:
+- name: Add certbot PPA
+  apt_repository:
     repo: ppa:certbot/certbot
 
-- shell:
+- name: Fetch certbot apt key count
+  shell:
     cmd: apt-key list 2>/dev/null | grep -c '^uid.*certbot'
   register: certbot_count
   changed_when: false
 
-- assert:
+- name: Verify certbot apt key count
+  assert:
     that:
       - (certbot_count.stdout | int) == 1
 
-- shell:
+- name: Fetch certbot apt key
+  shell:
     cmd: >
       apt-key list 2>/dev/null
       | grep -B1 '^uid.*certbot'
@@ -24,25 +29,30 @@
   register: observed_key
   changed_when: false
 
-- assert:
+- name: Verify certbot apt key
+  assert:
     that:
       - observed_key.stdout == letsencrypt_key
 
-- apt:
+- name: Install cerbot
+  apt:
     update_cache: true
     pkg:
       - certbot
 
-- set_fact:
+- name: Compose certbot cmd
+  set_fact:
     letsencrypt_cmd: >-
       certbot certonly -n --webroot -w {{ lighttpd_webroot }}
       --agree-tos --email 'haas.josh.a@gmail.com'
       {{ letsencrypt.domains | map('regex_replace', '^(.*)$', '-d \1') | join(' ') }}
 
-- command:
+- name: Run certbot
+  command:
     cmd: '{{ letsencrypt_cmd }}'
 
-- template:
+- name: Generate lets-renew script
+  template:
     src: lets-renew.j2
     dest: '{{ cron_dir }}/lets-renew'
     owner: root
@@ -50,16 +60,19 @@
     mode: '0744'
     lstrip_blocks: true
 
-- command:
+- name: Run lets-renew
+  command:
     cmd: '{{ cron_dir }}/lets-renew'
 
-- cron:
+- name: Register lets-renew cron
+  cron:
     name: lets-renew
     job: '{{ cron_dir }}/lets-renew &> /dev/null'
     day: '1'
     hour: '4'
 
-- include_tasks:
+- name: Add SSL to lighttpd config
+  include_tasks:
     file: lighttpd-write-config.yml
     apply:
       tags:
@@ -67,6 +80,7 @@
   vars:
     letsencrypt_done: true
 
-- service:
+- name: Restart lighttpd
+  service:
     name: lighttpd
     state: restarted

@@ -1,9 +1,11 @@
 ---
-- apt:
+- name: Install pip3
+  apt:
     pkg:
       - python3-pip
 
-- pip:
+- name: Install python libraries
+  pip:
     name:
       - lxml
       - Pillow
