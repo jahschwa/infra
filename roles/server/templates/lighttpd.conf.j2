@@ -1,0 +1,153 @@
+server.modules = (
+  "mod_access",
+  "mod_accesslog",
+  "mod_alias",
+  "mod_auth",
+  "mod_compress",
+  "mod_redirect",
+  "mod_setenv",
+  {% for module in lighttpd.modules|default([]) %}
+  "mod_{{ module }}",
+  {% endfor %}
+)
+
+server.document-root = "{{ lighttpd_webroot }}/{{ ansible_hostname }}"
+server.upload-dirs   = ( "/var/cache/lighttpd/uploads" )
+server.errorlog      = "/var/log/lighttpd/error.log"
+server.pid-file      = "/var/run/lighttpd.pid"
+server.username      = "{{ lighttpd_user }}"
+server.groupname     = "{{ lighttpd_group }}"
+server.port          = 80
+
+accesslog.filename   = "/var/log/lighttpd/access.log"
+{% raw %}
+accesslog.format     = "[%{%Y-%m-%d %H:%M:%S}t] (%h) <%u> %r {%s} \"%{User-Agent}i\""
+{% endraw %}
+index-file.names     = ( "index", "index.htm", "index.html" )
+url.access-deny      = ( "~", ".inc" )
+compress.cache-dir   = "/var/cache/lighttpd/compress/"
+compress.filetype    = ( "application/javascript", "text/css", "text/html", "text/plain" )
+
+static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" )
+
+auth.backend                   = "htpasswd"
+auth.backend.htpasswd.userfile = "{{ lighttpd_passwd_file }}"
+
+include_shell "/usr/share/lighttpd/include-conf-enabled.pl"
+include_shell "/usr/share/lighttpd/create-mime.assign.pl"
+
+##### SSL
+
+{% if (
+  (lighttpd.ssl | default(false))
+  and (letsencrypt is defined)
+  and (letsencrypt_done | default(false))
+) %}
+$SERVER["socket"] == ":443" {
+  ssl.engine  = "enable"
+  ssl.pemfile = "{{ letsencrypt_live}}/{{ letsencrypt.domains[0] }}/lighttpd.pem"
+  ssl.ca-file = "{{ letsencrypt_live}}/{{ letsencrypt.domains[0] }}/chain.pem"
+
+  ssl.use-sslv2   = "disable"
+  ssl.use-sslv3   = "disable"
+  ssl.cipher-list = "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
+  ssl.ec-curve    = "secp384r1"
+  ssl.dh-file     = "{{ dhparam_file }}"
+}
+
+{% if lighttpd.force_https | default(true) %}
+# force HTTPS
+$HTTP["scheme"] == "http" {
+  $HTTP["host"] =~ ".*" {
+    url.redirect = ( ".*" => "https://%0$0" )
+  }
+}
+{% endif %}
+
+# add security options
+$HTTP["scheme"] == "https" {
+  setenv.add-response-header = (
+    "Strict-Transport-Security" => "max-age=63072000; preload",
+    "X-Frame-Options" => "DENY",
+  )
+}
+{% endif %}
+
+##### X-Forwarded-For header
+
+{% if lighttpd.add_x_forward | default(false) %}
+# add X-Forwarded-For header
+proxy.forwarded = ( "for" => 1 )
+{% endif %}
+
+{% if lighttpd.frontend | default(false) %}
+# retrieve X-Forwarded-For
+extforward.headers   = ( "X-Forwarded-For" )
+extforward.forwarder = ( "{{ lighttpd.frontend }}" => "trust" )
+{% endif %}
+
+{% for (host, redirects) in (lighttpd.redirects | default({})).items() %}
+$HTTP["host"] =~ "{{ host }}" {
+  {% for (redirect, target) in redirects.items() %}
+  url.redirect = ( "{{ redirect }}" => "{{ target }}" )
+  {% endfor %}
+}
+{% endfor %}
+
+##### Domains
+
+{% for (domain, options) in (lighttpd.domains | default({})).items() %}
+$HTTP["host"] == "{{ domain }}" {
+
+  {% if options.root is defined %}
+  server.document-root = "{{ options.root }}"
+  {% endif %}
+
+  {% if options.auth is defined%}
+  {% for auth_options in options.auth %}
+  {% if auth_options.whitelist is defined %}
+  $HTTP["remoteip"] !~ "{{ auth_options.whitelist }}" {
+  {% endif %}
+    auth.require = (
+      {% for rule in auth_options.rules %}
+      "{{ rule.path }}" => (
+        "method" => "basic",
+        "realm" => "{{ rule.realm }}",
+        "require" => "{{ rule.require }}",
+      ),
+      {% endfor %}
+    )
+  {% if auth_options.whitelist is defined %}
+  }
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+
+  {% if options.dirlist is defined %}
+  $HTTP["url"] =~ "^/({{ options.dirlist | join('|') }})/" {
+    dir-listing.activate = "enable"
+  }
+  {% endif %}
+
+  {% if options.proxies is defined %}
+  proxy.server = (
+    {% for proxy in options.proxies %}
+    "{{ proxy.match }}" => ((
+      "host" => "{{ proxy.host | default('127.0.0.1') }}",
+      "port" => "{{ proxy.port }}",
+    ))
+    {% endfor %}
+  )
+  {% endif %}
+}
+
+{% endfor %}
+
+##### Let's Encrypt
+
+{% if letsencrypt is defined %}
+$HTTP["url"] =~ "^/.well-known/acme-challenge/" {
+  server.document-root = "{{ lighttpd_webroot }}"
+  auth.require = ()
+}
+{% endif %}

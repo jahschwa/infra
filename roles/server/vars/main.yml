@@ -1,0 +1,18 @@
+---
+gated_tasks:
+  - lighttpd
+  - letsencrypt
+
+cron_dir: /root/cron
+
+letsencrypt_key: 7BF576066ADA65728FC7E70A8C47BE8E75BCA694
+letsencrypt_root: /etc/letsencrypt
+letsencrypt_live: /etc/letsencrypt/live
+letsencrypt_group: ssl-cert
+
+dhparam_file: /etc/ssl/dhparam.pem
+
+lighttpd_webroot: /var/www/
+lighttpd_user: www-data
+lighttpd_group: www-data
+lighttpd_passwd_file: /etc/lighttpd/lighttpd.htpasswd

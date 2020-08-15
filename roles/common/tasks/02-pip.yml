@@ -1,6 +1,5 @@
 ---
 - apt:
-    state: present
     pkg:
       - python3-pip
 

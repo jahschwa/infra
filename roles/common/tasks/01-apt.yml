@@ -1,6 +1,5 @@
 ---
 - apt:
-    state: present
     pkg:
       - aptitude
       - curl

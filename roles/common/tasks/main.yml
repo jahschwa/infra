@@ -1,6 +1,13 @@
 ---
-- include_tasks: '{{ _auto_task }}'
+- include_tasks:
+    file: '{{ _auto_task }}'
+    apply:
+      tags:
+        - common
   loop: '{{ query("fileglob", "*.yml") | sort }}'
   loop_control:
     loop_var: _auto_task
-  when: not _auto_task is search("main.yml$")
+  when: _auto_task | regex_search('/[0-9]+-[-a-zA-Z_]+\.yml$')
+  tags:
+    - always
+    - common

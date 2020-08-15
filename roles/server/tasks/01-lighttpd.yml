@@ -1,0 +1,25 @@
+---
+- apt:
+    pkg:
+      - lighttpd
+
+- include_tasks:
+    file: lighttpd-write-config.yml
+    apply:
+      tags:
+        - server
+
+- file:
+    state: touch
+    path: '{{ lighttpd_passwd_file }}'
+    owner: root
+    group: '{{ lighttpd_group }}'
+    mode: '0640'
+
+- command:
+    cmd: 'openssl dhparam -out {{ dhparam_file }} 4096'
+    creates: '{{ dhparam_file }}'
+
+- service:
+    name: lighttpd
+    state: restarted

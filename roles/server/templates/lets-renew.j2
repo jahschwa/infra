@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# {{ letsencrypt_cmd }}
+
+certbot renew
+
+chown -R root:{{ letsencrypt_group }} {{ letsencrypt_root }}
+chmod -R g=rX {{ letsencrypt_root }}
+
+sites="{{ letsencrypt_live }}/*"
+for site in $sites; do
+  cat "$site/privkey.pem" "$site/cert.pem" > "$site/lighttpd.pem"
+done
+
+systemctl restart lighttpd
+{% for service in (letsencrypt.restart | default([])) %}
+systemctl restart {{ service }}
+{% endfor %}
