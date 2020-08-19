@@ -1,0 +1,2 @@
+---
+ssh_auth_keys: authorized_keys.server

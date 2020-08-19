@@ -1,0 +1,32 @@
+---
+lighttpd:
+  modules:
+    - extforward
+    - proxy
+  ssl: True
+  force_https: False
+  frontend: '10.4.11.30'
+  redirects:
+    'area11(.schwa.home)?$':
+      '.*': https://area11.jahschwa.com/lan
+  domains:
+    'area11.jahschwa.com':
+      root: area11
+      auth:
+        - rules:
+            - path: /nsa
+              realm: NSchwA
+              require: user=nsa
+      dirlist:
+        - linode
+      proxies:
+        - match: '/pastebin/'
+          port: 5280
+    '674.jahschwa.com':
+      root: 674/output
+      auth:
+        - whitelist: '^{{ router_ip }}$'
+          rules:
+            - path: /
+              realm: '674 Delsea Newsletter'
+              require: user=674

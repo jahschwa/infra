@@ -1,0 +1,3 @@
+---
+pelican:
+  dir: '{{ lighttpd_webroot }}/674'

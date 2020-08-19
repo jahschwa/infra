@@ -1,0 +1,6 @@
+---
+letsencrypt:
+  domains:
+    - area11.jahschwa.com
+    - 674.jahschwa.com
+    - conference.area11.jahschwa.com
