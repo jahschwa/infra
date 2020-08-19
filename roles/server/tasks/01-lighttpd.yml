@@ -4,6 +4,23 @@
     pkg:
       - lighttpd
 
+- name: Create lighttpd webroot dirs
+  file:
+    path: '{{ "" if (item.value.root[0] == "/") else (lighttpd_webroot + "/") }}{{ item.value.root }}'
+    state: directory
+    owner: '{{ lighttpd_user }}'
+    group: '{{ lighttpd_group }}'
+    mode: '2775'
+  with_dict: '{{ lighttpd.domains | default({}) }}'
+  when: item.value is defined
+
+- name: Add {{ user }} to {{ lighttpd_group }} group
+  user:
+    name: '{{ user }}'
+    groups:
+      - '{{ lighttpd_group }}'
+    append: true
+
 - include_tasks:
     file: lighttpd-write-config.yml
     apply:

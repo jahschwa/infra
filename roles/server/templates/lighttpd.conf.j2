@@ -11,7 +11,7 @@ server.modules = (
   {% endfor %}
 )
 
-server.document-root = "{{ lighttpd_webroot }}/{{ ansible_hostname }}"
+server.document-root = "{{ lighttpd_webroot }}/html"
 server.upload-dirs   = ( "/var/cache/lighttpd/uploads" )
 server.errorlog      = "/var/log/lighttpd/error.log"
 server.pid-file      = "/var/run/lighttpd.pid"
@@ -100,7 +100,7 @@ $HTTP["host"] =~ "{{ host }}" {
 $HTTP["host"] == "{{ domain }}" {
 
   {% if options.root is defined %}
-  server.document-root = "{{ options.root }}"
+  server.document-root = "{{ '' if (options.root[0] == '/') else (lighttpd_webroot + '/') }}{{ options.root }}"
   {% endif %}
 
   {% if options.auth is defined%}

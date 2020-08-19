@@ -5,6 +5,7 @@
       - aptitude
       - curl
       - dnsutils
+      - git
       - htop
       - iftop
       - iotop

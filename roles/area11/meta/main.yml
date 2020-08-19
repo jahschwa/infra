@@ -5,6 +5,13 @@ dependencies:
 
 ##############################################################################
 
+      tri:
+        host: area11
+        hidden: 
+        password:
+
+##############################################################################
+
       letsencrypt:
         domains:
           - area11.jahschwa.com
@@ -25,6 +32,7 @@ dependencies:
             '.*': https://area11.jahschwa.com/lan
         domains:
           'area11.jahschwa.com':
+            root: area11
             auth:
               - rules:
                   - path: /nsa
@@ -36,10 +44,15 @@ dependencies:
               - match: '/pastebin/'
                 port: 5280
           '674.jahschwa.com':
-            root: /var/www/674/output/
+            root: 674/output
             auth:
               - whitelist: '^{{ router_ip }}$'
                 rules:
                   - path: /
                     realm: '674 Delsea Newsletter'
                     require: user=674
+
+##############################################################################
+
+      pelican:
+        dir: '{{ lighttpd_webroot }}/674'

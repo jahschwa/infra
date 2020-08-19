@@ -34,7 +34,7 @@
     that:
       - observed_key.stdout == letsencrypt_key
 
-- name: Install cerbot
+- name: Install certbot
   apt:
     update_cache: true
     pkg:

@@ -1,7 +1,6 @@
 ---
-gated_tasks:
-  - lighttpd
-  - letsencrypt
+always_tasks:
+  - misc
 
 cron_dir: /root/cron
 
@@ -16,3 +15,5 @@ lighttpd_webroot: /var/www/
 lighttpd_user: www-data
 lighttpd_group: www-data
 lighttpd_passwd_file: /etc/lighttpd/lighttpd.htpasswd
+
+pelican_themes_dir: /usr/share/pelican-themes
