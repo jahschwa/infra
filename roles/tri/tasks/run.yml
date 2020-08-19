@@ -1,0 +1,18 @@
+---
+- name: Download backup from tri ({{ inventory_hostname }}/{{ src }})
+  get_url:
+    url: '{{ tri_down }}/{{ secrets.tri.hidden }}/{{ src }}.tar.gz'
+    dest: /tmp/{{ src | replace('/', '_') }}.tar.gz
+    username: '{{ inventory_hostname }}'
+    password: '{{ secrets.tri.password }}'
+  register: http_result
+  failed_when:
+    - http_result.failed
+    - (http_result.status_code | default(-1)) not in [200, 404]
+
+- name: Unpack backup ({{ inventory_hostname }}/{{ src }})
+  unarchive:
+    src: /tmp/{{ src | replace('/', '_') }}.tar.gz
+    dest: '{{ dest | dirname }}'
+    remote_src: true
+  when: (http_result.status_code | default(200)) == 200

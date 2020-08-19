@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 TARGET=$(readlink -f "${BASH_SOURCE[0]}")
-DIR=$(dirname "$TARGET")
-DIR=$(dirname "$DIR")
+PARENT=$(dirname "$TARGET")
+GRAND=$(dirname "$PARENT")
 
-ansible-playbook --ask-vault-pass "$DIR/site.yml" "$@"
+if which ring &> /dev/null; then
+  ansible-playbook --vault-password-file "$PARENT/vault.sh" "$GRAND/site.yml" "$@"
+else
+  ansible-playbook --ask-vault-pass "$GRAND/site.yml" "$@"
+fi

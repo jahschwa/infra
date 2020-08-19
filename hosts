@@ -1,2 +1,2 @@
-[area11]
-area11.schwa.home
+[home]
+area11 ansible_host=area11.schwa.home

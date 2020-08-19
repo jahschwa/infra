@@ -1,0 +1,24 @@
+---
+- name: Install pelican
+  pip:
+    name:
+      - pelican[Markdown]
+
+- name: Install pelican themes
+  git:
+    repo: https://github.com/getpelican/pelican-themes.git
+    dest: '{{ pelican_themes_dir }}'
+
+- name: Compose output dir
+  set_fact:
+    output_dir: '{{ ("" if pelican_rel[0] == "/" else lighttpd_webroot + "/") + pelican_rel }}'
+  vars:
+    pelican_rel: '{{ lighttpd.domains[pelican.domain].root }}'
+
+- name: Restore pelican content
+  include_role:
+    name: tri
+  vars:
+    src: pelican
+    dest: '{{ output_dir | dirname }}'
+    creates: pelicanconf.py

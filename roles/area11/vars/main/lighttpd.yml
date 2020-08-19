@@ -24,6 +24,7 @@ lighttpd:
           port: 5280
     '674.jahschwa.com':
       root: 674/output
+      restore: false
       auth:
         - whitelist: '^{{ router_ip }}$'
           rules:

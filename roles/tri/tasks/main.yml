@@ -1,0 +1,14 @@
+---
+- name: Check for {{ creates }}
+  stat:
+    path: '{{ dest }}/{{ creates }}'
+  register: stat_result
+  when: creates is defined
+  tags:
+    - always
+
+- include_tasks:
+    file: run.yml
+  when: (creates is not defined) or (stat_result.exists is not defined)
+  tags:
+    - always
