@@ -1,6 +1,8 @@
 ---
 - include_role:
     name: common
+  tags:
+    - always
 
 - include_tasks:
     file: '{{ _auto_task }}'

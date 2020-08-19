@@ -4,4 +4,4 @@ TARGET=$(readlink -f "${BASH_SOURCE[0]}")
 DIR=$(dirname "$TARGET")
 DIR=$(dirname "$DIR")
 
-ansible-playbook "$DIR/site.yml" "$@"
+ansible-playbook --ask-vault-pass "$DIR/site.yml" "$@"
