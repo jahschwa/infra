@@ -8,12 +8,10 @@
   include_role:
     name: tri
   vars:
-    src: lighttpd/{{ item.key }}
+    sub: lighttpd
+    src: '{{ item.key }}'
     dest: '{{ "" if (item.value.base[0] == "/") else (lighttpd_webroot + "/") }}{{ item.value.base }}'
     creates: '.'
-    owner: '{{ lighttpd_user }}'
-    group: '{{ user }}'
-    mode: '2775'
   with_dict: '{{ lighttpd.domains | default({}) }}'
   when: item.value.restore | default(true)
 

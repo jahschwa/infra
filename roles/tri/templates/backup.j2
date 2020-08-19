@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+file=$(mktemp)
+
+tar czf "$file" '{{ dest }}' &> /dev/null
+
+curl -s '{{ tri_up }}' \
+  -X POST \
+  -u '{{ inventory_hostname }}:'{{ secrets.tri.password | quote }} \
+  -F "file=@$file" \
+  -F 'path={{ sub | default("") }}' \
+  -F 'name={{ src }}.tar.gz' \
+  &> /dev/null
+
+rm "$file"

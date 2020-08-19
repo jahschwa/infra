@@ -3,6 +3,8 @@ always_tasks:
   - misc
 
 cron_dir: /root/cron
+cron_start: 2
+cron_stop: 5
 
 letsencrypt_key: 7BF576066ADA65728FC7E70A8C47BE8E75BCA694
 letsencrypt_root: /etc/letsencrypt
