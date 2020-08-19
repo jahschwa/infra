@@ -9,7 +9,7 @@
     name: tri
   vars:
     src: lighttpd/{{ item.key }}
-    dest: '{{ "" if (item.value.root[0] == "/") else (lighttpd_webroot + "/") }}{{ item.value.root }}'
+    dest: '{{ "" if (item.value.base[0] == "/") else (lighttpd_webroot + "/") }}{{ item.value.base }}'
     creates: '.'
     owner: '{{ lighttpd_user }}'
     group: '{{ user }}'
@@ -19,7 +19,7 @@
 
 - name: Create lighttpd webroot dirs
   file:
-    path: '{{ "" if (item.value.root[0] == "/") else (lighttpd_webroot + "/") }}{{ item.value.root }}'
+    path: '{{ "" if ((item.value.root | default(item.value.base))[0] == "/") else (lighttpd_webroot + "/") }}{{ item.value.root | default(item.value.base) }}'
     state: directory
     owner: '{{ lighttpd_user }}'
     group: '{{ lighttpd_group }}'

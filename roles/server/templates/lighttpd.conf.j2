@@ -99,8 +99,8 @@ $HTTP["host"] =~ "{{ host }}" {
 {% for (domain, options) in (lighttpd.domains | default({})).items() %}
 $HTTP["host"] == "{{ domain }}" {
 
-  {% if options.root is defined %}
-  server.document-root = "{{ '' if (options.root[0] == '/') else (lighttpd_webroot + '/') }}{{ options.root }}"
+  {% if options.root is defined or options.base is defined %}
+  server.document-root = "{{ '' if ((options.root | default(options.base))[0] == '/') else (lighttpd_webroot + '/') }}{{ options.root | default(options.base) }}"
   {% endif %}
 
   {% if options.auth is defined%}
@@ -147,7 +147,7 @@ $HTTP["host"] == "{{ domain }}" {
 
 {% if letsencrypt is defined %}
 $HTTP["url"] =~ "^/.well-known/acme-challenge/" {
-  server.document-root = "{{ lighttpd_webroot }}"
+  server.document-root = "{{ lighttpd_webroot }}/html"
   auth.require = ()
 }
 {% endif %}

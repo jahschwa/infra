@@ -11,7 +11,7 @@ letsencrypt_group: ssl-cert
 
 dhparam_file: /etc/ssl/dhparam.pem
 
-lighttpd_webroot: /var/www/
+lighttpd_webroot: /var/www
 lighttpd_user: www-data
 lighttpd_group: www-data
 lighttpd_passwd_file: /etc/lighttpd/lighttpd.htpasswd

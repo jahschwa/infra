@@ -11,7 +11,7 @@ lighttpd:
       '.*': https://area11.jahschwa.com/lan
   domains:
     'area11.jahschwa.com':
-      root: area11
+      base: area11
       auth:
         - rules:
             - path: /nsa
@@ -23,8 +23,8 @@ lighttpd:
         - match: '/pastebin/'
           port: 5280
     '674.jahschwa.com':
-      root: 674/output
-      restore: false
+      base: '674'
+      root: '674/output'
       auth:
         - whitelist: '^{{ router_ip }}$'
           rules:
