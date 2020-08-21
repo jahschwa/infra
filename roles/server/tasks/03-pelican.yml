@@ -11,6 +11,23 @@
 
 - name: Compose pelican dir
   set_fact:
-    pelican_dir: '{{ (("" if pelican_rel[0] == "/" else lighttpd_webroot + "/") + pelican_rel) | dirname }}'
+    output_dir: '{{ ("" if pelican_rel[0] == "/" else lighttpd_webroot + "/") + pelican_rel }}'
   vars:
     pelican_rel: '{{ lighttpd.domains[pelican.domain].root }}'
+
+- name: Generate pelican config
+  template:
+    src: pelicanconf.py.j2
+    dest: '{{ output_dir | dirname }}/pelicanconf.py'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '0644'
+    lstrip_blocks: True
+
+- name: Generate blog script
+  template:
+    src: blog.j2
+    dest: 'bin/blog'
+    mode: '0775'
+    lstrip_blocks: True
+  become: False

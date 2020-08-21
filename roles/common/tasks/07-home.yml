@@ -1,0 +1,12 @@
+---
+- file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - bin
+    - cron
+    - lib
+    - src/git
+    - temp
+    - trans
+  become: False
