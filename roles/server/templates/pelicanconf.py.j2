@@ -2,7 +2,7 @@ AUTHOR = '{{ pelican.author }}'
 SITENAME = '{{ pelican.sitename }}'
 SITEURL = 'https://{{ pelican.domain }}'
 
-THEME = '{{ pelican_themes_dir }}/{{ pelican.theme }}'
+THEME = '{{ ((output_dir | dirname) + "/" + pelican_custom_themes_dir) if (pelican.custom_theme | default(false)) else pelican_themes_dir }}/{{ pelican.theme }}'
 PATH = 'content'
 STATIC_PATHS = ['file']
 

@@ -3,7 +3,8 @@ pelican:
   domain: 674.jahschwa.com
   author: Josh Haas
   sitename: 674 Delsea Newsletter
-  theme: alchemy/alchemy
+  theme: alchemy
+  custom_theme: True
   links:
     - area11: http://area11.schwa.home
     - kodi: http://osmc.schwa.home:8080

@@ -24,6 +24,14 @@
     mode: '0644'
     lstrip_blocks: True
 
+- name: Create directories
+  file:
+    path: '{{ output_dir | dirname }}/{{ item }}'
+  with_items:
+    - content
+    - file
+    - '{{ pelican_custom_themes_dir }}'
+
 - name: Generate blog script
   template:
     src: blog.j2
