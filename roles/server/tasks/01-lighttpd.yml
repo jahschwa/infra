@@ -31,11 +31,10 @@
       - '{{ lighttpd_group }}'
     append: true
 
-- include_tasks:
-    file: lighttpd-write-config.yml
-    apply:
-      tags:
-        - server
+- import_tasks: lighttpd-write-config.yml
+  tags:
+    - server
+    - lighttpd
 
 - name: Create lighttpd password file
   file:
