@@ -3,3 +3,8 @@
   file:
     path: '{{ cron_dir }}'
     state: directory
+
+- name: Fetch letsencrypt status
+  stat:
+    path: '{{ letsencrypt_live }}/{{ letsencrypt.domains[0] }}/{{ letsencrypt_pem }}'
+  register: letsencrypt_stat

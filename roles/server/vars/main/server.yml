@@ -6,10 +6,14 @@ cron_dir: /root/cron
 cron_start: 2
 cron_stop: 5
 
-letsencrypt_key: 7BF576066ADA65728FC7E70A8C47BE8E75BCA694
+letsencrypt_fp: 7BF576066ADA65728FC7E70A8C47BE8E75BCA694
 letsencrypt_root: /etc/letsencrypt
 letsencrypt_live: /etc/letsencrypt/live
 letsencrypt_group: ssl-cert
+letsencrypt_key: privkey.pem
+letsencrypt_cert: cert.pem
+letsencrypt_pem: lighttpd.pem
+letsencrypt_ca: chain.pem
 
 dhparam_file: /etc/ssl/dhparam.pem
 

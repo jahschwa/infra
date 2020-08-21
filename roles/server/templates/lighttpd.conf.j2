@@ -41,12 +41,15 @@ include_shell "/usr/share/lighttpd/create-mime.assign.pl"
 {% if (
   (lighttpd.ssl | default(false))
   and (letsencrypt is defined)
-  and (letsencrypt_done | default(false))
+  and (
+    (letsencrypt_done | default(false))
+    or (letsencrypt_stat.stat.exists | default(false))
+  )
 ) %}
 $SERVER["socket"] == ":443" {
   ssl.engine  = "enable"
-  ssl.pemfile = "{{ letsencrypt_live}}/{{ letsencrypt.domains[0] }}/lighttpd.pem"
-  ssl.ca-file = "{{ letsencrypt_live}}/{{ letsencrypt.domains[0] }}/chain.pem"
+  ssl.pemfile = "{{ letsencrypt_live}}/{{ letsencrypt.domains[0] }}/{{ letsencrypt_pem }}"
+  ssl.ca-file = "{{ letsencrypt_live}}/{{ letsencrypt.domains[0] }}/{{ letsencrypt_ca }}"
 
   ssl.use-sslv2   = "disable"
   ssl.use-sslv3   = "disable"

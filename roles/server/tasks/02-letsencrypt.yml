@@ -1,7 +1,7 @@
 ---
 - name: Download certbot apt key
   apt_key:
-    id: '{{ letsencrypt_key }}'
+    id: '{{ letsencrypt_fp }}'
     keyserver: keyserver.ubuntu.com
 
 - name: Add certbot PPA
@@ -32,7 +32,7 @@
 - name: Verify certbot apt key
   assert:
     that:
-      - observed_key.stdout == letsencrypt_key
+      - observed_key.stdout == letsencrypt_fp
 
 - name: Install certbot
   apt:
@@ -72,15 +72,16 @@
     hour: '4'
 
 - name: Add SSL to lighttpd config
-  include_tasks:
-    file: lighttpd-write-config.yml
-    apply:
-      tags:
-        - server
+  import_tasks: lighttpd-write-config.yml
+  tags:
+    - server
+    - letsencrypt
   vars:
     letsencrypt_done: true
+  register: lighttpd_config
 
 - name: Restart lighttpd
   service:
     name: lighttpd
     state: restarted
+  when: '{{ lighttpd_config.changed }}'
