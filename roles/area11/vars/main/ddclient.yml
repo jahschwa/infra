@@ -1,0 +1,6 @@
+---
+ddclient:
+  protocol: namecheap
+  login: '{{ secrets.ddclient.login }}'
+  password: '{{ secrets.ddclient.password }}'
+  record: area11

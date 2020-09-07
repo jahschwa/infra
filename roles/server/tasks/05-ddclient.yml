@@ -1,0 +1,19 @@
+---
+- name: Install ddclient
+  apt:
+    pkg:
+      - ddclient
+
+- name: Generate ddclient config
+  template:
+    src: ddclient.conf.j2
+    dest: /etc/ddclient.conf
+    owner: root
+    group: root
+    mode: '0600'
+    lstrip_blocks: True
+
+- name: Restart ddclient
+  service:
+    name: ddclient
+    state: restarted
