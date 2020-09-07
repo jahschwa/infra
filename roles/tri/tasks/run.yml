@@ -7,7 +7,7 @@
 
 - name: Download backup from tri
   get_url:
-    url: '{{ tri_down }}/{{ secrets.tri.hidden }}/{{ (sub + "/") | default("") }}{{ src }}.tar.gz'
+    url: '{{ tri_down }}/{{ secrets.tri.hidden }}/{{ (sub + "/") if sub is defined else "" }}{{ src }}.tar.gz'
     dest: /tmp/{{ src }}.tar.gz
     username: '{{ inventory_hostname }}'
     password: '{{ secrets.tri.password }}'
@@ -15,18 +15,20 @@
   when: (creates is not defined) or not (stat_result.stat.exists | default(false))
   failed_when:
     - http_result.failed
-    - (http_result.status_code | default(-1)) not in [200, 404]
+    - (http_result.status_code | default(-1)) not in [200, 304, 404]
 
 - name: Unpack backup
   unarchive:
-    src: /tmp/{{ src | replace('/', '_') }}.tar.gz
+    src: /tmp/{{ src }}.tar.gz
     dest: '{{ dest | dirname }}'
     remote_src: true
-  when: (http_result.status_code | default(-1)) == 200
+    owner: '{{ owner | default(omit) }}'
+    group: '{{ group | default(omit) }}'
+  when: (http_result.status_code | default(304)) in [200, 304]
 
 - name: Compose backup cron name
   set_fact:
-    cron_name: 'backup_{{ ((sub | replace("/", "-")) + "-" ) | default("") }}{{ src }}'
+    cron_name: 'backup_{{ ((sub | replace("/", "-")) + "-") if sub is defined else "" }}{{ src }}'
 
 - name: Generate script ({{ cron_name }})
   template:

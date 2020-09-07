@@ -2,7 +2,7 @@
 
 file=$(mktemp)
 
-tar czf "$file" '{{ dest }}' &> /dev/null
+tar czf "$file" -C '{{ dest | dirname }}' '{{ dest | basename }}' &> /dev/null
 
 curl -s '{{ tri_up }}' \
   -X POST \
