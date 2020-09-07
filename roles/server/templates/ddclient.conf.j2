@@ -5,7 +5,7 @@ ssl=yes
 
 use=web, web=checkip.dyndns.com, web-skip='IP Address'
 server=dynamicdns.park-your-domain.com,\
-protocol=namecheap,\
+protocol={{ ddclient.protocol }},\
 login={{ ddclient.login }},\
 password='{{ ddclient.password }}',\
 {{ ddclient.record }}
