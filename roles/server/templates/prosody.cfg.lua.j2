@@ -1,0 +1,84 @@
+modules_enabled = {
+
+  -- Generally required
+  "roster",
+  "saslauth",
+  "dialback",
+  "disco",
+  {% if letsencrypt is defined %}
+  "tls",
+  {% endif %}
+
+  -- Not essential, but recommended
+  "carbons",
+  "pep",
+  "private",
+  "blocklist",
+  "vcard",
+
+  -- Nice to have
+  "version",
+  "uptime",
+  "time",
+  "ping",
+  "register",
+  "mam",
+
+  -- Admin interfaces
+  "admin_adhoc",
+
+  {% if prosody.bosh | default(False) %}
+  -- HTTP modules
+  "bosh",
+  {% endif %}
+
+  -- Other specific functionality
+  "posix",
+
+}
+
+admins = {
+{% for jid in prosody.admins %}
+  "{{ jid }}",
+{% endfor %}
+}
+
+allow_registration = false
+authentication = "internal_hashed"
+archive_expires_after = "1w"
+
+-- Debian
+daemonize = true
+pidfile = "/var/run/prosody/prosody.pid"
+log = {
+  info = "/var/log/prosody/prosody.log",
+  error = "/var/log/prosody/prosody.err",
+  debug = "/var/log/prosody/prosody.bug",
+  { levels={ "error" }, to="syslog" },
+}
+
+{% if letsencrypt is defined %}
+ssl = {
+  key = "{{ letsencrypt_live }}/{{ letsencrypt.domains[0] }}/{{ letsencrypt_key }}",
+  certificate = "{{ letsencrypt_live }}/{{ letsencrypt.domains[0] }}/{{ letsencrypt_full }}",
+  dhparam = "{{ dhparam_file }}",
+}
+
+c2s_require_encryption = true
+s2s_require_encryption = true
+s2s_secure_auth = true
+{% endif %}
+
+VirtualHost "{{ prosody.domain }}"
+
+{% if prosody.muc | default(False) %}
+Component "{{ prosody_muc_domain }}.{{ prosody.domain }}" "muc"
+    restrict_room_creation = true
+    {% if prosody.pastebin | default(false) %}
+    modules_enabled = { "pastebin" }
+    http_host = "{{ prosody.domain }}"
+    pastebin_url = "https://{{ prosody.domain }}/{{ prosody_pastebin_url }}/"
+    {% endif %}
+{% endif %}
+
+Include "conf.d/*.cfg.lua"

@@ -1,0 +1,8 @@
+---
+prosody:
+  domain: area11.jahschwa.com
+  admins:
+    - laptopdude@jahschwa.com
+    - laptopdude@area11.jahschwa.com
+  muc: true
+  pastebin: true

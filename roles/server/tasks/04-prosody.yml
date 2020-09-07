@@ -1,0 +1,30 @@
+---
+- name: Install prosody
+  apt:
+    pkg:
+      - prosody
+      - prosody-modules
+
+- name: Restore prosody data
+  include_role:
+    name: tri
+  vars:
+    src: prosody
+    dest: '{{ prosody_data_dir }}'
+    creates: '{{ prosody.domain | replace(".", "%2e") }}/accounts/{{ user }}.dat'
+    owner: prosody
+    group: prosody
+
+- name: Generate prosody config
+  template:
+    src: prosody.cfg.lua.j2
+    dest: /etc/prosody/prosody.cfg.lua
+    owner: root
+    group: '{{ prosody_group }}'
+    mode: '0640'
+    lstrip_blocks: True
+
+- name: Restart prosody
+  service:
+    name: prosody
+    state: restarted

@@ -14,6 +14,7 @@ letsencrypt_key: privkey.pem
 letsencrypt_cert: cert.pem
 letsencrypt_pem: lighttpd.pem
 letsencrypt_ca: chain.pem
+letsencrypt_full: fullchain.pem
 
 dhparam_file: /etc/ssl/dhparam.pem
 
@@ -24,3 +25,8 @@ lighttpd_passwd_file: /etc/lighttpd/lighttpd.htpasswd
 
 pelican_themes_dir: /usr/share/pelican-themes
 pelican_custom_themes_dir: themes
+
+prosody_data_dir: /var/lib/prosody
+prosody_group: prosody
+prosody_muc_domain: conference
+prosody_pastebin_url: pastebin
