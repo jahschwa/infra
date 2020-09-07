@@ -84,4 +84,4 @@
   service:
     name: lighttpd
     state: restarted
-  when: '{{ lighttpd_config.changed }}'
+  when: lighttpd_config.changed | default(false)

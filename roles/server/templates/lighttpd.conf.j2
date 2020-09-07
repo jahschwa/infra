@@ -48,8 +48,8 @@ include_shell "/usr/share/lighttpd/create-mime.assign.pl"
 ) %}
 $SERVER["socket"] == ":443" {
   ssl.engine  = "enable"
-  ssl.pemfile = "{{ letsencrypt_live}}/{{ letsencrypt.domains[0] }}/{{ letsencrypt_pem }}"
-  ssl.ca-file = "{{ letsencrypt_live}}/{{ letsencrypt.domains[0] }}/{{ letsencrypt_ca }}"
+  ssl.pemfile = "{{ letsencrypt_live }}/{{ letsencrypt.domains[0] }}/{{ letsencrypt_pem }}"
+  ssl.ca-file = "{{ letsencrypt_live }}/{{ letsencrypt.domains[0] }}/{{ letsencrypt_ca }}"
 
   ssl.use-sslv2   = "disable"
   ssl.use-sslv3   = "disable"
