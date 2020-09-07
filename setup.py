@@ -9,7 +9,8 @@ ANS_DIR = os.path.expanduser('~/.ansible')
 CFG_FILE = 'ansible.cfg'
 ANS_DIR_FILE = os.path.join(ANS_DIR, CFG_FILE)
 ANS_FILE = os.path.expanduser('~/.' + CFG_FILE)
-SCRIPT = 'bin/ansp'
+SCRIPT = 'bin/ans'
+SCRIPTS = ['p', 'v']
 
 TASKS = {}
 TASKS['linkdir'] = {
@@ -18,12 +19,13 @@ TASKS['linkdir'] = {
 TASKS['linkhomecfg'] = {
   'args': [ANS_DIR_FILE, ANS_FILE],
 }
-TASKS['linkscript'] = {
-  'args': [
-    os.path.join(GIT_DIR, SCRIPT),
-    os.path.join(HOME_DIR, SCRIPT),
-  ]
-}
+for s in SCRIPTS:
+  TASKS['linkscript' + s] = {
+    'args': [
+      os.path.join(GIT_DIR, SCRIPT + s),
+      os.path.join(HOME_DIR, SCRIPT + s),
+    ]
+  }
 
 def main(tasks):
 

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+TARGET=$(readlink -f "${BASH_SOURCE[0]}")
+PARENT=$(dirname "$TARGET")
+GRAND=$(dirname "$PARENT")
+
+sub="$1"
+shift
+
+if which ring &> /dev/null; then
+  ansible-vault "$sub" --vault-password-file "$PARENT/vault.sh" "$@"
+else
+  ansible-vault "$sub" --ask-vault-pass "$@"
+fi
