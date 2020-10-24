@@ -19,6 +19,7 @@ letsencrypt_full: fullchain.pem
 dhparam_file: /etc/ssl/dhparam.pem
 
 lighttpd_webroot: /var/www
+lighttpd_letsencrypt_dir: html
 lighttpd_user: www-data
 lighttpd_group: www-data
 lighttpd_passwd_file: /etc/lighttpd/lighttpd.htpasswd

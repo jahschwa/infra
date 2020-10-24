@@ -150,7 +150,7 @@ $HTTP["host"] == "{{ domain }}" {
 
 {% if letsencrypt is defined %}
 $HTTP["url"] =~ "^/.well-known/acme-challenge/" {
-  server.document-root = "{{ lighttpd_webroot }}/html"
+  server.document-root = "{{ lighttpd_webroot }}/{{ lighttpd_letsencrypt_dir }}"
   auth.require = ()
 }
 {% endif %}

@@ -43,7 +43,7 @@
 - name: Compose certbot cmd
   set_fact:
     letsencrypt_cmd: >-
-      certbot certonly -n --webroot -w {{ lighttpd_webroot }}
+      certbot certonly -n --webroot -w {{ lighttpd_webroot }}/{{ lighttpd_letsencrypt_dir }}
       --agree-tos --email 'haas.josh.a@gmail.com'
       {{ letsencrypt.domains | map('regex_replace', '^(.*)$', '-d \1') | join(' ') }}
 
