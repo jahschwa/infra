@@ -69,7 +69,8 @@
     name: lets-renew
     job: '{{ cron_dir }}/lets-renew &> /dev/null'
     day: '1'
-    hour: '4'
+    hour: '{{ cron_stop | random(start=cron_start) }}'
+    minute: '{{ 60 | random }}'
 
 - name: Add SSL to lighttpd config
   import_tasks: lighttpd-write-config.yml
