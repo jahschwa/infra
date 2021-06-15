@@ -39,3 +39,9 @@
     mode: '0775'
     lstrip_blocks: True
   become: False
+
+- name: Run blog script
+  shell:
+    cmd: 'bin/blog'
+  become: False
+  changed_when: False
