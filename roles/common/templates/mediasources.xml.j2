@@ -1,0 +1,9 @@
+<mediasources>
+    {% for (typ, locations) in conf.mediasources.items() %}
+    <{{ typ }}>
+        {% for loc in locations %}
+        <location id="{{ loop.index0 }}">{{ loc }}</location>
+        {% endfor %}
+    </{{ typ }}>
+    {% endfor %}
+</mediasources>

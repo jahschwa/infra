@@ -1,0 +1,31 @@
+---
+kodi_default:
+  dir: '~'
+  favourites: []
+  guisettings:
+    lookandfeel.skin: skin.estuary
+    services.webserver: 'true'
+    services.webserverport: 8080
+    services.webserverauthentication: 'true'
+    services.webserverusername: '{{ secrets.kodi.api.username | default("") }}'
+    services.webserverpassword: '{{ secrets.kodi.api.password | default("") }}'
+  linux:
+    user: '{{ user }}'
+    group: '{{ user }}'
+  mediasources: {}
+  sources:
+    files: []
+    games: []
+    music:
+      - name: Auto-mounted drives
+        path: /media/
+    pictures: []
+    programs: []
+    video:
+      - name: Auto-mounted drives
+        path: /media/
+
+kodi_favourites: .kodi/userdata/favourites.xml
+kodi_guisettings: .kodi/userdata/guisettings.xml
+kodi_mediasources: .kodi/userdata/mediasources.xml
+kodi_sources: .kodi/userdata/sources.xml

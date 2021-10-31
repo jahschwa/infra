@@ -1,0 +1,51 @@
+---
+- name: Merge kodi vars
+  set_fact:
+    conf: '{{ kodi_default | combine(kodi, recursive=True, list_merge="append") }}'
+
+- name: Check for Kodi
+  command:
+    cmd: which kodi
+  register: kodi_check
+  changed_when: False
+
+- name: Install Kodi
+  apt:
+    state: present
+    pkg:
+      - kodi
+  when: kodi_check.rc > 0
+
+- name: Modify guisettings.xml
+  lineinfile:
+    path: '{{ conf.dir }}/{{ kodi_guisettings }}'
+    regexp: '^ *<setting id="{{ item.key }}"'
+    line: '    <setting id="{{ item.key }}">{{ item.value }}</setting>'
+  with_dict: '{{ conf.guisettings }}'
+
+- name: Generate mediasources.xml
+  template:
+    src: mediasources.xml.j2
+    dest: '{{ conf.dir }}/{{ kodi_mediasources }}'
+    owner: '{{ conf.linux.user }}'
+    group: '{{ conf.linux.group }}'
+    mode: '0644'
+    lstrip_blocks: true
+
+- name: Generate sources.xml
+  template:
+    src: sources.xml.j2
+    dest: '{{ conf.dir }}/{{ kodi_sources }}'
+    owner: '{{ conf.linux.user }}'
+    group: '{{ conf.linux.group }}'
+    mode: '0644'
+    lstrip_blocks: true
+
+- name: Generate favourites.xml
+  template:
+    src: favourites.xml.j2
+    dest: '{{ conf.dir }}/{{ kodi_favourites }}'
+    owner: '{{ conf.linux.user }}'
+    group: '{{ conf.linux.group }}'
+    mode: '0644'
+    lstrip_blocks: true

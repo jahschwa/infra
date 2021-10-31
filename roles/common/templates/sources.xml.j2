@@ -1,0 +1,15 @@
+<sources>
+    {% for (category, sources) in conf.sources.items() %}
+    <{{ category }}>
+        <default pathversion="1"></default>
+        {% for source in sources %}
+        <source>
+            {% for (key, value) in source.items() %}
+            <{{ key }}>{{ value }}</{{ key }}>
+            {% endfor %}
+            <allowsharing>true</allowsharing>
+        </source>
+        {% endfor %}
+    </{{ category }}>
+    {% endfor %}
+</sources>
