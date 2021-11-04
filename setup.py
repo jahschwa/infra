@@ -1,31 +1,31 @@
 #!/usr/bin/env python3
 
 import os
+from pathlib import Path
 
-GIT_DIR = os.path.dirname(os.path.realpath(__file__))
-HOME_DIR = os.path.expanduser('~')
+GIT = Path(__file__).resolve().parent
+HOME = Path('~').expanduser()
 
-ANS_DIR = os.path.expanduser('~/.ansible')
-CFG_FILE = 'ansible.cfg'
-ANS_DIR_FILE = os.path.join(ANS_DIR, CFG_FILE)
-ANS_FILE = os.path.expanduser('~/.' + CFG_FILE)
-SCRIPT = 'bin/ans'
-SCRIPTS = ['p', 'v']
+ANSIBLE = HOME / '.ansible'
+CFG = 'ansible.cfg'
+CFG_HIDDEN = '.' + CFG
+
+SCRIPTS = Path('bin/ans')
+SCRIPT_SUFFIXES = ['p', 'v']
 
 TASKS = {}
-TASKS['linkdir'] = {
-  'args': [GIT_DIR, ANS_DIR],
+TASKS['link_ansible_dir'] = {
+  'args': [GIT, ANSIBLE],
 }
-TASKS['linkhomecfg'] = {
-  'args': [ANS_DIR_FILE, ANS_FILE],
+TASKS['link_home_cfg'] = {
+  'args': [ANSIBLE / CFG, HOME / CFG_HIDDEN],
 }
-for s in SCRIPTS:
-  TASKS['linkscript' + s] = {
-    'args': [
-      os.path.join(GIT_DIR, SCRIPT + s),
-      os.path.join(HOME_DIR, SCRIPT + s),
-    ]
+for suffix in SCRIPT_SUFFIXES:
+  script = SCRIPTS.with_name(SCRIPTS.name + suffix)
+  TASKS[f'link_script_{suffix}'] = {
+    'args': [GIT / script, HOME / script],
   }
+
 
 def main(tasks):
 
