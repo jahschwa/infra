@@ -1,3 +1,3 @@
 [home]
-area11 ansible_host=area11.schwa.home
-osmc ansible_host=osmc.schwa.home
+area11
+osmc
