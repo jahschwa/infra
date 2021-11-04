@@ -3,6 +3,14 @@
   apt:
     pkg:
       - python3-pip
+      - python3-setuptools
+
+- name: Upgrade pip3
+  pip:
+    name:
+      - pip
+      - setuptools
+    state: latest
 
 - name: Install python libraries
   pip:
