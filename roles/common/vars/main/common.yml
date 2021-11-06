@@ -1,7 +1,7 @@
 ---
 kodi_default:
-  dir: '~'
-  favourites: []
+  dir: '/home/{{ user }}'
+  favorites: []
   guisettings:
     lookandfeel.skin: skin.estuary
     services.webserver: 'true'
@@ -25,6 +25,7 @@ kodi_default:
       - name: Auto-mounted drives
         path: /media/
 
+kodi_userdata: .kodi/userdata
 kodi_favourites: .kodi/userdata/favourites.xml
 kodi_guisettings: .kodi/userdata/guisettings.xml
 kodi_mediasources: .kodi/userdata/mediasources.xml

@@ -1,3 +1,4 @@
 [home]
 area11
 osmc
+sibylpad ansible_connection=local

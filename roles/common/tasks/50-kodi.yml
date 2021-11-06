@@ -8,6 +8,7 @@
     cmd: which kodi
   register: kodi_check
   changed_when: False
+  failed_when: False
 
 - name: Install Kodi
   apt:
@@ -15,6 +16,21 @@
     pkg:
       - kodi
   when: kodi_check.rc > 0
+
+- name: Check for userdata dir
+  command:
+    cmd: ls '{{ conf.dir }}/{{ kodi_userdata }}'
+  register: userdata_check
+  changed_when: False
+  failed_when: False
+
+- name: Run kodi to populate configs
+  command:
+    cmd: timeout 1 kodi --standalone
+  when: userdata_check.rc > 0
+  changed_when: True
+  failed_when: False
+  become: False
 
 - name: Modify guisettings.xml
   lineinfile:
@@ -30,7 +46,7 @@
     owner: '{{ conf.linux.user }}'
     group: '{{ conf.linux.group }}'
     mode: '0644'
-    lstrip_blocks: true
+    lstrip_blocks: True
 
 - name: Generate sources.xml
   template:
@@ -39,7 +55,7 @@
     owner: '{{ conf.linux.user }}'
     group: '{{ conf.linux.group }}'
     mode: '0644'
-    lstrip_blocks: true
+    lstrip_blocks: True
 
 - name: Generate favourites.xml
   template:
@@ -48,4 +64,4 @@
     owner: '{{ conf.linux.user }}'
     group: '{{ conf.linux.group }}'
     mode: '0644'
-    lstrip_blocks: true
+    lstrip_blocks: True

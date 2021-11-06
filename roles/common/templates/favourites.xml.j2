@@ -1,5 +1,5 @@
 <favourites>
-    {% for fav in conf.favourites %}
+    {% for fav in conf.favorites %}
     <favourite name="{{ fav.name }}">ActivateWindow({{ fav.window }},&quot;{{ fav.path }}&quot;,return)</favourite>
     {% endfor %}
 </favourites>

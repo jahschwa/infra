@@ -1,6 +1,5 @@
 ---
 kodi:
-  dir: /home/osmc
   favorites:
     - name: Josh Music
       window: 10502
@@ -9,11 +8,7 @@ kodi:
       window: 10025
       path: smb://trichiliocosm/sibyl/video/laptopdude/Anime/Series/
   guisettings:
-    audiooutput.channels: 8
-    audiooutput.passthroughdevice: ALSA:hdmi:CARD=vc4hdmi0,DEV=0
-  linux:
-    group: osmc
-    user: osmc
+    audiooutput.channels: 1
   mediasources:
     network:
       - smb://trichiliocosm/sibyl
