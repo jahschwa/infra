@@ -1,0 +1,39 @@
+---
+- name: '{{ title }} : Fetch manifest'
+  uri:
+    body_format: json
+    url: https://api.github.com/repos/{{ static.repo }}/releases/latest
+  register: releases
+
+- name: '{{ title }} : Choose asset regex'
+  set_fact:
+    asset_regex: '{{ static.asset[kodi_version] | default(static.asset.default) }}'
+
+- name: '{{ title }} : Select correct asset URL'
+  set_fact:
+    asset_name: '{{ item.name }}'
+    asset_url: '{{ item.url }}'
+  loop_control:
+    label: '{{ item.name }}'
+  with_list: '{{ releases.json.assets }}'
+  when: item.name | regex_search(asset_regex)
+
+- name: '{{ title }} : Download zip'
+  get_url:
+    dest: '{{ addons_dir }}/{{ asset_name }}'
+    headers:
+      Accept: application/octet-stream
+    url: '{{ asset_url }}'
+
+- name: '{{ title }} : Unzip'
+  unarchive:
+    dest: '{{ addons_dir }}'
+    group: '{{ conf.linux.group }}'
+    owner: '{{ conf.linux.user }}'
+    remote_src: True
+    src: '{{ addons_dir }}/{{ asset_name }}'
+
+- name: '{{ title }} : Delete zip'
+  file:
+    path: '{{ addons_dir }}/{{ asset_name }}'
+    state: absent

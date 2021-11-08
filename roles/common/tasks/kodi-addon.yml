@@ -1,0 +1,41 @@
+---
+- name: '{{ title }} : Check if installed'
+  command:
+    cmd: ls {{ addons_dir }}/{{ static.name }}
+  changed_when: False
+  failed_when: False
+  register: installed
+
+- name: '{{ title }} : Download'
+  include_tasks:
+    file: 'kodi-{{ static.dl_method }}.yml'
+    apply:
+      tags:
+        - kodi
+  tags:
+    - always
+  when: installed.rc > 0
+
+- name: '{{ title }} : Check if kodi is running'
+  command:
+    cmd: pgrep kodi
+  failed_when: False
+  register: kodi_running
+
+- name: '{{ title }} : Refresh addons'
+  command:
+    cmd: kodi-send --action=UpdateLocalAddons
+  when: kodi_running.rc == 0
+
+- name: '{{ title }} : Run kodi to detect addon'
+  command:
+    cmd: timeout 1 kodi --standalone
+  become: False
+  failed_when: False
+  when: kodi_running.rc > 0
+
+- name: '{{ title }} : Enable'
+  command:
+    cmd: >
+      sqlite3 {{ addons_db }}
+      'UPDATE installed SET enabled = 1 WHERE addonid = "{{ static.name }}"'

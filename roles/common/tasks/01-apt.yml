@@ -15,4 +15,5 @@
       - ncdu
       - netcat
       - nmap
+      - sqlite3
       - tree

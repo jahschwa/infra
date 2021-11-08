@@ -1,5 +1,7 @@
 ---
 kodi:
+  addons:
+    youtube: {}
   favorites:
     - name: Josh Music
       window: 10502

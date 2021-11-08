@@ -3,32 +3,25 @@
   set_fact:
     conf: '{{ kodi_default | combine(kodi, recursive=True, list_merge="append") }}'
 
-- name: Check for Kodi
+- name: Check for kodi
   command:
     cmd: which kodi
   register: kodi_check
   changed_when: False
   failed_when: False
 
-- name: Install Kodi
+- name: Install kodi
   apt:
     state: present
     pkg:
       - kodi
+      - kodi-eventclients-kodi-send
   when: kodi_check.rc > 0
-
-- name: Check for userdata dir
-  command:
-    cmd: ls '{{ conf.dir }}/{{ kodi_userdata }}'
-  register: userdata_check
-  changed_when: False
-  failed_when: False
 
 - name: Run kodi to populate configs
   command:
     cmd: timeout 1 kodi --standalone
-  when: userdata_check.rc > 0
-  changed_when: True
+    creates: '{{ conf.dir }}/{{ kodi_userdata }}'
   failed_when: False
   become: False
 
@@ -65,3 +58,29 @@
     group: '{{ conf.linux.group }}'
     mode: '0644'
     lstrip_blocks: True
+
+- name: Get kodi version
+  shell:
+    cmd: "kodi --version | head -n 1 | grep -o '[0-9]*'"
+  register: kodi_version
+  changed_when: False
+  failed_when: False
+
+- name: Install addons
+  include_tasks:
+    file: 'kodi-addon.yml'
+    apply:
+      tags:
+        - kodi
+  loop_control:
+    loop_var: _addon
+  tags:
+    - always
+  with_dict: '{{ conf.addons }}'
+  vars:
+    addons_db: '{{ conf.dir }}/{{ kodi_addons.db }}'
+    addons_dir: '{{ conf.dir }}/{{ kodi_addons.dir }}'
+    dynamic: '{{ _addon.value }}'
+    name: '{{ _addon.key }}'
+    static: '{{ kodi_addons[_addon.key] }}'
+    title: 'kodi : {{ _addon.key }}'
