@@ -24,7 +24,9 @@
     remote_src: true
     owner: '{{ owner | default(omit) }}'
     group: '{{ group | default(omit) }}'
-  when: (http_result.status_code | default(304)) in [200, 304]
+  when:
+    - (creates is not defined) or not (stat_result.stat.exists | default(false))
+    - (http_result.status_code | default(304)) in [200, 304]
 
 - name: Compose backup cron name
   set_fact:
