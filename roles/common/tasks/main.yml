@@ -4,11 +4,14 @@
     apply:
       tags:
         - common
-        - '{{ _auto_task | regex_replace("^.*/[0-9]+-([a-zA-Z_]+)\.yml", "\1") }}'
+        - '{{ "always" if (_auto_task | regex_replace("^.*/[0-9]+-([-a-zA-Z_]+)\.yml$", "\1") in always_tasks) else (_auto_task | regex_replace("^.*/[0-9]+-([-a-zA-Z_]+)\.yml$", "\1")) }}'
   loop: '{{ query("fileglob", "*.yml") | sort }}'
   loop_control:
     loop_var: _auto_task
-  when: _auto_task | regex_search('/[0-9]+-[-a-zA-Z_]+\.yml$')
+  when:
+    - _auto_task | regex_search('/[0-9]+-[-a-zA-Z_]+\.yml$')
+    - "(_auto_task | regex_replace('^.*/[0-9]+-([-a-zA-Z_]+)\\\\.yml$', '\\\\1')) in always_tasks
+      or lookup('vars', (_auto_task | regex_replace('^.*/[0-9]+-([-a-zA-Z_]+)\\\\.yml$', '\\\\1')), default=false)"
   tags:
     - always
     - common
