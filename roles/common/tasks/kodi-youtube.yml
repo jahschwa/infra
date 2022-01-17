@@ -1,0 +1,9 @@
+---
+- name: '{{ title }} : Configure youtube API secrets'
+  template:
+    src: api_keys.json.j2
+    dest: '{{ config_dir }}/{{ static.name }}/api_keys.json'
+    owner: '{{ conf.linux.user }}'
+    group: '{{ conf.linux.group }}'
+    mode: '0644'
+    lstrip_blocks: True

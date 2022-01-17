@@ -26,12 +26,14 @@ kodi_default:
         path: /media/
 
 kodi_addons:
+  config_dir: .kodi/userdata/addon_data
   db: .kodi/userdata/Database/Addons27.db
   dir: .kodi/addons
   youtube:
     asset:
       default: 'plugin.video.youtube-[0-9.]+.zip'
       19: 'plugin.video.youtube-[0-9.]+\\+matrix.1.zip'
+    configure: true
     dl_method: github-release
     name: plugin.video.youtube
     repo: anxdpanic/plugin.video.youtube

@@ -80,6 +80,7 @@
   vars:
     addons_db: '{{ conf.dir }}/{{ kodi_addons.db }}'
     addons_dir: '{{ conf.dir }}/{{ kodi_addons.dir }}'
+    config_dir: '{{ conf.dir }}/{{ kodi_addons.config_dir }}'
     dynamic: '{{ _addon.value }}'
     name: '{{ _addon.key }}'
     static: '{{ kodi_addons[_addon.key] }}'

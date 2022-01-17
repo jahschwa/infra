@@ -16,6 +16,16 @@
     - always
   when: installed.rc > 0
 
+- name: '{{ title }} : Configure'
+  include_tasks:
+    file: 'kodi-{{ name }}.yml'
+    apply:
+      tags:
+        - kodi
+  tags:
+    - always
+  when: static.configure | default(false)
+
 - name: '{{ title }} : Check if kodi is running'
   command:
     cmd: pgrep kodi
