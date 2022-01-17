@@ -12,7 +12,7 @@ pelican:
     - expenses: https://docs.google.com/spreadsheets/d/1WJyyo3riVrNuJwf1XlmmkI4KScnt-82KTFCefcgPqy0
     - groceries: https://docs.google.com/spreadsheets/d/1WYNg-k_C2K2Um9UqOEsq3xaNcHaUg5ydVmzMfoaoLNY
     - chores: /file/chores.pdf
-    - chore-assign: /file/chore-assign-2021.pdf
+    - chore-assign: /file/chore-assign-2022.pdf
     - chore-fees: https://docs.google.com/spreadsheets/d/1WiIHq6Dmnfw9ZFUDihXjxf3J2VoH_mpLusK7_oD5dyI
     - deposits: https://docs.google.com/spreadsheets/d/1R-CvW7BWN8XFzS1VPRYcTHRMe1zdVfYsUsNkgMV3OjQ
     - rules: https://docs.google.com/document/d/17YWYWbvm6Z1L0siLtRzCcNYhWwQzF8dkyEtwDu0oRdw
