@@ -40,7 +40,8 @@ kodi_default:
 
 kodi_addons:
   config_dir: .kodi/userdata/addon_data
-  db: .kodi/userdata/Database/Addons27.db
+  db_dir: .kodi/userdata/Database
+  db_regex: 'Addons[0-9]+\.db'
   dir: .kodi/addons
   youtube:
     asset:

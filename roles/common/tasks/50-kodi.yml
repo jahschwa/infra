@@ -66,6 +66,17 @@
   changed_when: False
   failed_when: False
 
+- name: Locate addons DB
+  find:
+    paths:
+      - '{{ conf.dir }}/{{ kodi_addons.db_dir }}'
+    patterns:
+      - '{{ kodi_addons.db_regex }}'
+    use_regex: True
+  register: addons_dbs
+  changed_when: False
+  failed_when: 'not addons_dbs.matched'
+
 - name: Install addons
   include_tasks:
     file: 'kodi-addon.yml'
@@ -76,7 +87,7 @@
     loop_var: _addon
   with_dict: '{{ conf.addons }}'
   vars:
-    addons_db: '{{ conf.dir }}/{{ kodi_addons.db }}'
+    addons_db: '{{ (addons_dbs.files | sort(attribute="path") | last)["path"] }}'
     addons_dir: '{{ conf.dir }}/{{ kodi_addons.dir }}'
     config_dir: '{{ conf.dir }}/{{ kodi_addons.config_dir }}'
     dynamic: '{{ _addon.value }}'
