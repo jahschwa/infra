@@ -74,8 +74,6 @@
         - kodi
   loop_control:
     loop_var: _addon
-  tags:
-    - always
   with_dict: '{{ conf.addons }}'
   vars:
     addons_db: '{{ conf.dir }}/{{ kodi_addons.db }}'
