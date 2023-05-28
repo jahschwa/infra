@@ -1,5 +1,5 @@
 ---
-misc: True
+pre: True
 
 cron_start: 2
 cron_stop: 5
