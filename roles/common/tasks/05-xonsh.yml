@@ -1,0 +1,21 @@
+---
+- name: Install xonsh
+  pip:
+    name:
+      - xonsh[full]
+
+- name: Find xonsh path
+  command:
+    cmd: which xonsh
+  register: xonsh_path
+  changed_when: False
+
+- name: Add xonsh to shells
+  lineinfile:
+    path: /etc/shells
+    regexp: '{{ xonsh_path.stdout }}'
+    line: '{{ xonsh_path.stdout }}'
+
+- name: Set shell to xonsh
+  command:
+    cmd: 'chsh -s {{ xonsh_path.stdout }} {{ user }}'
