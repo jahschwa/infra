@@ -35,7 +35,7 @@
 - name: Generate script ({{ cron_name }})
   template:
     src: backup.j2
-    dest: '{{ cron_dir }}/{{ cron_name }}'
+    dest: '{{ cron_dir_root }}/{{ cron_name }}'
     owner: root
     group: root
     mode: '0770'
@@ -44,6 +44,6 @@
 - name: Register cron ({{ cron_name }})
   cron:
     name: '{{ cron_name }}'
-    job: '{{ cron_dir }}/{{ cron_name }} &> /dev/null'
+    job: '{{ cron_dir_root }}/{{ cron_name }} &> /dev/null'
     hour: '{{ cron_stop | random(start=cron_start) }}'
     minute: '{{ 60 | random }}'

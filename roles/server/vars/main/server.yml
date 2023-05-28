@@ -2,7 +2,6 @@
 always_tasks:
   - misc
 
-cron_dir: /root/cron
 cron_start: 2
 cron_stop: 5
 

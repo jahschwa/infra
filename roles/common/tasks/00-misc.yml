@@ -1,0 +1,11 @@
+---
+- name: Create root cron script dir
+  file:
+    path: '{{ cron_dir_root }}'
+    state: directory
+
+- name: Create user cron script dir
+  file:
+    path: '{{ cron_dir_user }}'
+    state: directory
+  become: False

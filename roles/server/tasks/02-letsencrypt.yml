@@ -54,7 +54,7 @@
 - name: Generate lets-renew script
   template:
     src: lets-renew.j2
-    dest: '{{ cron_dir }}/lets-renew'
+    dest: '{{ cron_dir_root }}/lets-renew'
     owner: root
     group: root
     mode: '0744'
@@ -62,12 +62,12 @@
 
 - name: Run lets-renew
   command:
-    cmd: '{{ cron_dir }}/lets-renew'
+    cmd: '{{ cron_dir_root }}/lets-renew'
 
 - name: Register lets-renew cron
   cron:
     name: lets-renew
-    job: '{{ cron_dir }}/lets-renew &> /dev/null'
+    job: '{{ cron_dir_root }}/lets-renew &> /dev/null'
     day: '1'
     hour: '{{ cron_stop | random(start=cron_start) }}'
     minute: '{{ 60 | random }}'

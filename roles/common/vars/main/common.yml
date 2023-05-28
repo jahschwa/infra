@@ -1,4 +1,7 @@
 ---
+cron_dir_root: /root/cron
+cron_dir_user: ~/bin/cron
+
 kodi_default:
   dir: '/home/{{ user }}'
   favorites: []
