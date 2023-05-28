@@ -1,4 +1,12 @@
 ---
+misc: True
+apt: True
+pip: True
+gpg: True
+git: True
+xonsh: True
+home: True
+
 cron_dir_root: /root/cron
 cron_dir_user: ~/bin/cron
 

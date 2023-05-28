@@ -1,6 +1,5 @@
 ---
-always_tasks:
-  - misc
+misc: True
 
 cron_start: 2
 cron_stop: 5
