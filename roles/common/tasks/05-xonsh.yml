@@ -54,6 +54,13 @@
     regexp: '{{ xonsh_path.stdout }}'
     line: '{{ xonsh_path.stdout }}'
 
+- name: Get current shell
+  command:
+    cmd: getent passwd {{ user }}
+  register: raw_current_shell
+  changed_when: False
+
 - name: Set shell to xonsh
   command:
     cmd: 'chsh -s {{ xonsh_path.stdout }} {{ user }}'
+  when: raw_current_shell.stdout.split(":")[-1] != xonsh_path.stdout
