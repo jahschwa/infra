@@ -1,0 +1,15 @@
+# vim: filetype=xonsh
+
+{% set silence_prompt_toolkit = (python_version == '3.10.6') %}
+{% if silence_prompt_toolkit %}
+import warnings
+{% endif %}
+
+{% if silence_prompt_toolkit %}
+warnings.filterwarnings(
+  'ignore',
+  category=DeprecationWarning,
+  module='prompt_toolkit.application.application',
+  message='There is no current event loop',
+)
+{% endif %}

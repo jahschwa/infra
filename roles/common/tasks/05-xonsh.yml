@@ -4,6 +4,23 @@
     name:
       - xonsh[full]
 
+- name: Get python version
+  command:
+    cmd: python3 --version
+  register: raw_python_version
+  changed_when: False
+
+- name: Parse python version
+  set_fact:
+    python_version: '{{ raw_python_version.stdout | regex_search("[0-9.]+$") }}'
+
+- name: Generate .xonshrc
+  template:
+   src: xonshrc.j2
+   dest: '~/.xonshrc'
+   lstrip_blocks: True
+  become: False
+
 - name: Find xonsh path
   command:
     cmd: which xonsh
