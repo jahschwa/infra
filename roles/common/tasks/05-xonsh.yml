@@ -20,19 +20,24 @@
     state: directory
   become: False
 
-- name: Generate ansible .xonshrc
+- name: Copy static .xonshrc
+  copy:
+    src: xonshrc_static.xsh
+    dest: ~/.config/xonsh/rc.d/00_static.xsh
+  become: False
+
+- name: Generate dynamic .xonshrc
   template:
    src: xonshrc_ansible.j2
-   dest: ~/.config/xonsh/rc.d/00_ansible.xsh
+   dest: ~/.config/xonsh/rc.d/50_dynamic.xsh
    lstrip_blocks: True
   become: False
 
 - name: Create empty user override .xonshrc
-  template:
-    src: xonshrc_local.j2
+  copy:
+    src: xonshrc_local.xsh
     dest: ~/.config/xonsh/rc.d/99_local.xsh
     force: False
-    lstrip_blocks: True
   become: False
 
 - name: Symlink user override .xonshrc
