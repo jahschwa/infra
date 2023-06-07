@@ -1,0 +1,8 @@
+---
+- name: Clone git repos
+  git:
+    repo: https://github.com/{{ item.key }}/{{ item.value }}.git
+    dest: ~/src/git/{{ item.value }}
+  with_dict:
+    altercation: vim-colors-solarized
+  become: False

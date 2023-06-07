@@ -8,6 +8,7 @@ gpg: True
 git: True
 xonsh: True
 home: True
+vim: True
 
 cron_dir_root: /root/cron
 cron_dir_user: ~/bin/cron

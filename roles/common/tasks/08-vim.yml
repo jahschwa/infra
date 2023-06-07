@@ -1,0 +1,24 @@
+---
+- name: Create vim dirs
+  file:
+    path: ~/.vim/{{ item }}
+    state: directory
+  with_items:
+    - colors
+    - ftdetect
+    - plugin
+    - syntax
+  become: False
+
+- name: Link solarized colors
+  file:
+    path: ~/.vim/colors/solarized.vim
+    state: link
+    src: ~/src/git/vim-colors-solarized/colors/solarized.vim
+  become: False
+
+- name: Copy .vimrc
+  copy:
+    src: files/dot/vimrc
+    dest: ~/.vimrc
+  become: False
