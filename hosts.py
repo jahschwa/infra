@@ -7,7 +7,7 @@ import socket
 
 
 GROUPS = {
-  'home': ['area11', 'osmc', 'sibylpad'],
+  'home': ['area11', 'osmc', 'shinkiro', 'sibylpad'],
 }
 
 

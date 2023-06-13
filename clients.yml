@@ -7,3 +7,7 @@
 - hosts: sibylpad
   roles:
     - sibylpad
+
+- hosts: shinkiro
+  roles:
+    - shinkiro
