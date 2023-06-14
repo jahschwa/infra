@@ -8,6 +8,7 @@ def main():
 
   def disable_warnings():
 
+    # https://github.com/xonsh/xonsh/issues/4513#issuecomment-1522724843
     if _version() == '3.6.10':
       warnings.filterwarnings(
         'ignore',
