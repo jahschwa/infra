@@ -5,3 +5,121 @@ pre: True
 
 cron_start: 4
 cron_stop: 7
+
+gnome_terminal:
+  dconf_path: 'org/gnome/terminal/legacy/profiles:'
+  default_profile: 0
+  profile_fmt: '00000000-0000-0000-0000-{:012d}'
+  profiles:
+    defaults:
+      audible-bell: False
+      font: 'DejaVu Sans Mono 12'
+      use-system-font: False
+      use-theme-colors: False
+      use-theme-transparency: False
+    0:
+      visible-name: selenized
+      background-color: '#103c48'
+      bold-color: '#cad8d9'
+      foreground-color: '#adbcbc'
+      palette:
+        - '#184956'
+        - '#fa5750'
+        - '#75b938'
+        - '#dbb32d'
+        - '#4695f7'
+        - '#f275be'
+        - '#41c7b9'
+        - '#72898f'
+        - '#2d5b69'
+        - '#ff665c'
+        - '#84c747'
+        - '#ebc13d'
+        - '#58a3ff'
+        - '#ff84cd'
+        - '#53d6c7'
+        - '#cad8d9'
+    1:
+      visible-name: selenized-large
+      inherit: 0
+      font: 'DejaVu Sans Mono 18'
+    2:
+      visible-name: selenized-huge
+      inherit: 0
+      font: 'DejaVu Sans Mono 24'
+    3:
+      visible-name: black
+      background-color: 'rgb(0,0,0)'
+      bold-color: 'rgb(0,0,0)'
+      foreground-color: 'rgb(255,255,255)'
+      palette:
+        - 'rgb(0,0,0)'
+        - 'rgb(170,0,0)'
+        - 'rgb(0,170,0)'
+        - 'rgb(170,85,0)'
+        - 'rgb(0,0,170)'
+        - 'rgb(170,0,170)'
+        - 'rgb(0,170,170)'
+        - 'rgb(170,170,170)'
+        - 'rgb(85,85,85)'
+        - 'rgb(255,85,85)'
+        - 'rgb(85,255,85)'
+        - 'rgb(255,255,85)'
+        - 'rgb(85,85,255)'
+        - 'rgb(255,85,255)'
+        - 'rgb(85,255,255)'
+        - 'rgb(255,255,255)'
+    4:
+      visible-name: black-large
+      inherit: 3
+      font: 'DejaVu Sans Mono 18'
+    5:
+      visible-name: black-huge
+      inherit: 3
+      font: 'DejaVu Sans Mono 24'
+    6:
+      visible-name: solarized
+      background-color: 'rgb(0,43,54)'
+      bold-color: 'rgb(147, 161, 161)'
+      foreground-color: 'rgb(131,148,150)'
+      palette:
+        - 'rgb(7,54,66)'
+        - 'rgb(220,50,47)'
+        - 'rgb(133,153,0)'
+        - 'rgb(181,137,0)'
+        - 'rgb(38,139,210)'
+        - 'rgb(211,54,130)'
+        - 'rgb(42,161,152)'
+        - 'rgb(238,232,213)'
+        - 'rgb(0,43,54)'
+        - 'rgb(203,75,22)'
+        - 'rgb(88,110,117)'
+        - 'rgb(101,123,131)'
+        - 'rgb(131,148,150)'
+        - 'rgb(108,113,196)'
+        - 'rgb(147,161,161)'
+        - 'rgb(253,246,227)'
+    7:
+      visible-name: solarized-large
+      inherit: 6
+      font: 'DejaVu Sans Mono 18'
+    8:
+      visible-name: solarized-huge
+      inherit: 6
+      font: 'DejaVu Sans Mono 24'
+
+guake:
+  dconf_path: 'apps/guake'
+  dconf_values:
+    general:
+      start-at-login: True
+      use-default-font: False
+      window-height: '46'
+      window-width: '100'
+    style/background:
+      transparency: '77'
+    style/font:
+      allow-bold: True
+      palette: '#184956:#fa5750:#75b938:#dbb32d:#4695f7:#f275be:#41c7b9:#72898f:#2d5b69:#ff665c:#84c747:#ebc13d:#58a3ff:#ff84cd:#53d6c7:#cad8d9:#adbcbc:#103c48'
+      palette-name: 'Selenized'
+      style: 'DejaVu Sans Mono 12'

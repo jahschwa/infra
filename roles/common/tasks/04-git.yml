@@ -4,5 +4,5 @@
     repo: https://github.com/{{ item.key }}/{{ item.value }}.git
     dest: ~/src/git/{{ item.value }}
   with_dict:
-    altercation: vim-colors-solarized
+    jan-warchol: selenized
   become: False

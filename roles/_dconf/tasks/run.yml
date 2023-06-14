@@ -1,0 +1,9 @@
+---
+- name: '{{ name }} : load dconf values'
+  command:
+    argv:
+      - dconf
+      - load
+      - '/{{ path.strip("/") }}/'
+    stdin: '{{ lookup("template", "dconf.ini.j2") }}'
+  become: False

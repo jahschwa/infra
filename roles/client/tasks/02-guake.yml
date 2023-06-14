@@ -1,0 +1,9 @@
+---
+- name: Create guake profile
+  include_role:
+    name: _dconf
+  vars:
+    name: 'guake profile'
+    path: '{{ guake.dconf_path }}/{{ item.key }}'
+    conf: '{{ item.value }}'
+  with_dict: '{{ guake.dconf_values }}'

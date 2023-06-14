@@ -1,0 +1,13 @@
+[/]
+{% for (k, v) in conf.items() %}
+{% if k != 'inherit' %}
+{% if v is string %}
+{% set v = "'{}'".format(v) %}
+{% elif v is boolean %}
+{% set v = v | string | lower %}
+{% else %}
+{% set v = '[' + v | map_format("'{}'") | join(', ') + ']' %}
+{% endif %}
+{{ k }}={{ v }}
+{% endif %}
+{% endfor %}

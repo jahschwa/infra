@@ -1,0 +1,20 @@
+---
+- name: Populate gnome-terminal profile list and default
+  include_role:
+    name: _dconf
+  vars:
+    name: 'gnome-terminal'
+    path: '{{ gnome_terminal.dconf_path }}'
+    conf:
+      default: '{{ gnome_terminal.profile_fmt.format(gnome_terminal.default_profile) }}'
+      list: '{{ gnome_terminal.profiles | list | select("ne", "defaults") | map_format(gnome_terminal.profile_fmt) }}'
+
+- name: Create profiles
+  include_role:
+    name: _dconf
+  vars:
+    name: 'gnome-terminal profiles'
+    path: '{{ gnome_terminal.dconf_path }}/:{{ gnome_terminal.profile_fmt.format(item.key) }}'
+    conf: '{{ gnome_terminal.profiles.defaults | combine(gnome_terminal.profiles[item.value.inherit | default(None)] | default({})) | combine(item.value) }}'
+  with_dict: '{{ gnome_terminal.profiles }}'
+  when: item.key != 'defaults'

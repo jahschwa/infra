@@ -10,11 +10,11 @@
     - syntax
   become: False
 
-- name: Link solarized colors
+- name: Link selenized colors
   file:
-    path: ~/.vim/colors/solarized.vim
+    path: ~/.vim/colors/selenized.vim
     state: link
-    src: ~/src/git/vim-colors-solarized/colors/solarized.vim
+    src: ~/src/git/selenized/editors/vim/colors/selenized.vim
   become: False
 
 - name: Copy .vimrc
