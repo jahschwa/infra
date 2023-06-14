@@ -17,6 +17,15 @@ def main():
         message='There is no current event loop',
       )
 
+  def env():
+
+    # https://github.com/jan-warchol/selenized/tree/master/other-apps/dircolors
+    $LS_COLORS.update({
+      'ow': ('BOLD_INVERT_BLUE',),
+      'st': ('BLACK', 'BACKGROUND_BLUE'),
+      'su': ('BACKGROUND_RED',),
+    })
+
   def path():
 
     $PATH.add(p'~/bin', front=True, replace=True)
