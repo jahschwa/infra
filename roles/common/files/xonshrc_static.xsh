@@ -20,6 +20,11 @@ def main():
 
     $PATH.add(p'~/bin', front=True, replace=True)
 
+  def ssh():
+
+    if not !(ssh-add -L > /dev/null):
+      ssh-add
+
   def _version():
 
     return '.'.join(
