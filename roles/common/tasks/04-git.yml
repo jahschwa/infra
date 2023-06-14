@@ -1,8 +1,7 @@
 ---
 - name: Clone git repos
   git:
-    repo: https://github.com/{{ item.key }}/{{ item.value }}.git
+    repo: '{{ git.url_prefix }}{{ item.key }}/{{ item.value }}{{ git.url_suffix }}'
     dest: ~/src/git/{{ item.value }}
-  with_dict:
-    jan-warchol: selenized
+  with_dict: '{{ git.repos }}'
   become: False

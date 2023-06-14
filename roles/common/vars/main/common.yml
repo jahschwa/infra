@@ -5,13 +5,19 @@ pre: True
 apt: True
 pip: True
 gpg: True
-git: True
 xonsh: True
 home: True
 vim: True
 
 cron_dir_root: /root/cron
 cron_dir_user: ~/bin/cron
+
+git:
+  url_prefix: https://github.com/
+  url_suffix: .git
+  repos:
+    jan-warchol: selenized
+    abhishekmukherg: xonsh-vim
 
 kodi_default:
   dir: '/home/{{ user }}'

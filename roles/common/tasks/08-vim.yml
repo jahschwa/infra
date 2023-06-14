@@ -17,6 +17,16 @@
     src: ~/src/git/selenized/editors/vim/colors/selenized.vim
   become: False
 
+- name: Link xonsh syntax definitions
+  file:
+    path: ~/.vim/{{ item }}/xonsh.vim
+    state: link
+    src: ~/src/git/xonsh-vim/{{ item }}/xonsh.vim
+  with_items:
+    - ftdetect
+    - syntax
+  become: False
+
 - name: Copy .vimrc
   copy:
     src: files/dot/vimrc
