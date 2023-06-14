@@ -6,8 +6,12 @@ import warnings
 
 def main():
 
+  def set_path():
+
+    $PATH.add(p'~/bin', front=True, replace=True)
+
   def silence_prompt_toolkit():
-  
+
     if _version() != '3.6.10':
       return
 
@@ -17,9 +21,9 @@ def main():
       module='prompt_toolkit.application.application',
       message='There is no current event loop',
     )
-  
+
   def _version():
-  
+
     return '.'.join(
       map(
         str,
@@ -28,7 +32,7 @@ def main():
     )
 
   for (name, func) in sorted(locals().items()):
-    if not name.startswith('_'):
+    if not name.startswith('_') and name[0].islower():
       func()
 
 
