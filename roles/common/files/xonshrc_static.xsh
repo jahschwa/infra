@@ -35,6 +35,18 @@ def main():
     if not !(ssh-add -L > /dev/null):
       ssh-add
 
+  def style():
+
+    from xonsh.tools import register_custom_style
+
+    config = {
+      'PTK.CompletionMenu': 'bg:ansimagenta ansiblack',
+      'PTK.CompletionMenu.Completion.Current': 'bg:ansiblack ansimagenta',
+    }
+
+    register_custom_style('jah', config, base='default')
+    $XONSH_COLOR_STYLE = 'jah'
+
   def _version():
 
     return '.'.join(
